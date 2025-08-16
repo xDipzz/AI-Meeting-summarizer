@@ -57,3 +57,7 @@ A web application that transforms meeting transcripts into structured, actionabl
 ## Environment Variables
 
 - `GROQ_API_KEY` - Required for AI summarization functionality
+
+## Deployment
+
+When deploying to Vercel, make sure to add the `GROQ_API_KEY` environment variable in your Vercel project settings.
