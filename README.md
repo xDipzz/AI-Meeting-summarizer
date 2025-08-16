@@ -1,30 +1,59 @@
-# AI meeting summarizer
+# AI Meeting Summarizer
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+A web application that transforms meeting transcripts into structured, actionable summaries using AI technology.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/dipzs-projects/v0-ai-meeting-summarizer)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/Tg2L6lCgj4U)
+## Features
 
-## Overview
+- Upload meeting transcripts via file upload or direct text input
+- AI-powered summarization with customizable instructions
+- Edit and refine generated summaries
+- Share summaries via email
+- Copy and download functionality
+- Progress tracking throughout the workflow
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+## Technology Stack
 
-## Deployment
+- Next.js 15 with TypeScript
+- Groq AI API for text summarization
+- Tailwind CSS for styling
+- Radix UI components
 
-Your project is live at:
+## Setup
 
-**[https://vercel.com/dipzs-projects/v0-ai-meeting-summarizer](https://vercel.com/dipzs-projects/v0-ai-meeting-summarizer)**
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Build your app
+3. Configure environment variables:
+   - Copy `.env.example` to `.env.local`
+   - Get your Groq API key from https://console.groq.com/keys
+   - Add your API key to `.env.local`:
+     ```
+     GROQ_API_KEY=your_api_key_here
+     ```
 
-Continue building your app on:
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-**[https://v0.app/chat/projects/Tg2L6lCgj4U](https://v0.app/chat/projects/Tg2L6lCgj4U)**
+5. Open http://localhost:3000 in your browser
 
-## How It Works
+## Usage
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+1. Upload a text file or paste your meeting transcript
+2. Optionally add custom summarization instructions
+3. Click "Generate Summary" to create an AI summary
+4. Edit the summary if needed
+5. Share via email, copy to clipboard, or download as a file
+
+## API Endpoints
+
+- `/api/summarize` - Generates AI summaries from transcripts
+- `/api/send-email` - Handles email sharing functionality
+
+## Environment Variables
+
+- `GROQ_API_KEY` - Required for AI summarization functionality
