@@ -58,25 +58,38 @@ export default function Home() {
       e.stopPropagation()
 
       const files = Array.from(e.dataTransfer.files)
-      const textFile = files.find((file) => file.type === "text/plain")
+      const file = files[0]
 
-      if (textFile) {
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          const content = e.target?.result as string
-          setTranscript(content)
+      if (file) {
+        // Allow text files, even if MIME type is not detected correctly
+        const validExtensions = ['.txt', '.text']
+        const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+        
+        if (file.type === "text/plain" || validExtensions.includes(fileExtension) || file.type === "") {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            const content = e.target?.result as string
+            setTranscript(content)
+            toast({
+              title: "File uploaded successfully",
+              description: `Loaded ${content.length} characters from ${file.name}`,
+            })
+          }
+          reader.onerror = () => {
+            toast({
+              title: "File read error",
+              description: "Could not read the file. Please try again.",
+              variant: "destructive",
+            })
+          }
+          reader.readAsText(file)
+        } else {
           toast({
-            title: "File uploaded successfully",
-            description: `Loaded ${content.length} characters from ${textFile.name}`,
+            title: "Invalid file type",
+            description: "Please upload a .txt file",
+            variant: "destructive",
           })
         }
-        reader.readAsText(textFile)
-      } else {
-        toast({
-          title: "Invalid file type",
-          description: "Please upload a .txt file",
-          variant: "destructive",
-        })
       }
     },
     [toast],
@@ -84,17 +97,36 @@ export default function Home() {
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    if (file && file.type === "text/plain") {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        const content = e.target?.result as string
-        setTranscript(content)
+    if (file) {
+      // Allow text files, even if MIME type is not detected correctly
+      const validExtensions = ['.txt', '.text']
+      const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+      
+      if (file.type === "text/plain" || validExtensions.includes(fileExtension) || file.type === "") {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          const content = e.target?.result as string
+          setTranscript(content)
+          toast({
+            title: "File uploaded successfully",
+            description: `Loaded ${content.length} characters from ${file.name}`,
+          })
+        }
+        reader.onerror = () => {
+          toast({
+            title: "File read error",
+            description: "Could not read the file. Please try again.",
+            variant: "destructive",
+          })
+        }
+        reader.readAsText(file)
+      } else {
         toast({
-          title: "File uploaded successfully",
-          description: `Loaded ${content.length} characters from ${file.name}`,
+          title: "Invalid file type",
+          description: "Please upload a .txt file",
+          variant: "destructive",
         })
       }
-      reader.readAsText(file)
     }
   }
 
@@ -350,13 +382,20 @@ export default function Home() {
                 className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 text-center hover:border-blue-400 transition-colors cursor-pointer"
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
+                onClick={() => document.getElementById('file-upload')?.click()}
               >
                 <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
                 <Label htmlFor="file-upload" className="cursor-pointer">
                   <span className="text-blue-600 hover:text-blue-700 font-medium">Click to upload a text file</span>
                   <span className="text-slate-500 ml-1">or drag and drop</span>
                 </Label>
-                <input id="file-upload" type="file" accept=".txt" onChange={handleFileUpload} className="hidden" />
+                <input 
+                  id="file-upload" 
+                  type="file" 
+                  accept=".txt,.text,text/plain" 
+                  onChange={handleFileUpload} 
+                  className="hidden" 
+                />
                 <p className="text-sm text-slate-400 mt-1">TXT files only • Max 10MB</p>
               </div>
 
